@@ -14,13 +14,13 @@ class IframeHandler(Handler):
                     "Referer": context.get("referer_url", ""),
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
                 }
-                res = requests.get(url, headers=headers, timeout=5)
+                res = requests.get(url, headers=headers, timeout=5, verify=False)
                 if res:
                     context["referer_url"] = context["url"]
                     context["url"] = url
                     context["html"] = res.text
                     return context
-            except:
+            except Exception as e:
                 continue
         return None
 

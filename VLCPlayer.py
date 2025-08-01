@@ -42,8 +42,8 @@ class VLCPlayer:
                 # Modifica i riferimenti ai segmenti per passare attraverso il proxy
                 m3u8_content = response.text
                 modified_content = re.sub(
-                    r"([a-zA-Z0-9\-]+\.ts)",  # Trova i segmenti .ts
-                    lambda match: f"http://localhost:{self.proxy_port}/segment?url=https://live.servis.hair/hls/{match.group(0)}",
+                    r"(https?://[^\s]+)",
+                    lambda match: f"http://localhost:{self.proxy_port}/segment?url={match.group(0)}",
                     m3u8_content
                 )
                 return Response(modified_content, content_type="application/vnd.apple.mpegurl")
@@ -53,12 +53,12 @@ class VLCPlayer:
         @self.app.route("/segment")
         def proxy_segment():
             """Gestisce le richieste ai segmenti `.ts`."""
-            segment_url = request.args.get("url")
+            segment_url = request.url
             if not segment_url:
                 return "Errore: URL del segmento mancante", 400
             try:
                 # Scarica il segmento dal server remoto con gli header personalizzati
-                upstream_response = requests.get(segment_url, headers=self.headers, stream=True)
+                upstream_response = requests.get(segment_url, headers=self.headers, stream=True, verify=False)
                 return Response(
                     upstream_response.iter_content(chunk_size=1024),
                     content_type=upstream_response.headers.get("Content-Type"),

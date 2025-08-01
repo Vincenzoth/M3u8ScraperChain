@@ -20,7 +20,7 @@ class ZiggoDeobfuscateHandler(Handler):
                     "Referer": context.get("referer_url", ""),
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
                 }
-                res = requests.get(url, headers=headers, timeout=5)
+                res = requests.get(url, headers=headers, timeout=5, verify=False)
                 res.raise_for_status()  # Solleva eccezione per codici 4xx/5xx
 
                 data = res.json()  # Più sicuro di json.loads(res.text)
