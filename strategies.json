@@ -1,0 +1,6 @@
+{
+  "example.com": ["ScriptTagHandler", "VideoTagHandler", "RegexFallbackHandler"],
+  "othersite.tv": ["IframeHandler", "ScriptTagHandler", "RegexFallbackHandler"],
+  "ziggo-gratis.com": ["IframeHandler", "IframeHandler", "IframeHandler", "ZiggoDeobfuscateHandler", "M3U8PlayerHandler"],
+  "default": ["VideoTagHandler", "ScriptTagHandler", "RegexFallbackHandler"]
+}
